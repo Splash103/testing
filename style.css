@@ -1,0 +1,305 @@
+:root {
+  --background: #c8f1f4;
+  --water: #80d2f2;
+  --lily: #58ad5d;
+  --frog: linear-gradient(135deg, #4caf50, #2e7d32);
+  --frog-eye: #f7f7f7;
+  --frog-pupil: #232323;
+  --obstacle: #8d5524;
+  --text: #1b2b1b;
+  --accent: #f9a825;
+  font-size: 16px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Baloo 2", "Segoe UI", sans-serif;
+  background: radial-gradient(circle at top, #e7fbff 0%, var(--background) 50%, #6cc9d4 100%);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 2rem 1rem 4rem;
+}
+
+.page {
+  max-width: 960px;
+  width: 100%;
+  display: grid;
+  gap: 2rem;
+}
+
+.header h1 {
+  font-size: clamp(2.5rem, 4vw, 3.5rem);
+  text-align: center;
+  margin-bottom: 0.5rem;
+  color: #11694f;
+}
+
+.header p {
+  text-align: center;
+  font-size: 1.1rem;
+  line-height: 1.5;
+}
+
+.header .key {
+  background: rgba(17, 105, 79, 0.12);
+  border-radius: 0.75rem;
+  padding: 0.1rem 0.75rem;
+  margin: 0 0.15rem;
+  border: 2px solid rgba(17, 105, 79, 0.2);
+  font-weight: 700;
+}
+
+.game-wrapper {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1.5rem;
+}
+
+@media (min-width: 840px) {
+  .game-wrapper {
+    grid-template-columns: minmax(0, 2fr) minmax(200px, 1fr);
+    align-items: stretch;
+  }
+}
+
+.game-container {
+  position: relative;
+  background: linear-gradient(180deg, #a8e3f2 0%, var(--water) 40%, #4ca3b6 100%);
+  border-radius: 1.5rem;
+  overflow: hidden;
+  min-height: 320px;
+  border: 6px solid rgba(17, 105, 79, 0.25);
+  box-shadow: 0 25px 45px rgba(25, 77, 72, 0.25);
+}
+
+.game-container.shake {
+  animation: shake 400ms ease;
+}
+
+.ground {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 4rem;
+  background: linear-gradient(180deg, rgba(43, 96, 72, 0.8), rgba(26, 64, 48, 0.95));
+}
+
+.lily {
+  position: absolute;
+  bottom: 3.5rem;
+  right: 3.5rem;
+  width: 6rem;
+  height: 6rem;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0) 70%),
+    radial-gradient(circle at bottom, #6ac66f 0%, #3a8f3e 70%);
+  border-radius: 50% 50% 48% 52% / 45% 40% 60% 55%;
+  filter: blur(0.5px);
+}
+
+.frog {
+  position: absolute;
+  bottom: 4rem;
+  left: 3rem;
+  width: 72px;
+  height: 60px;
+  border-radius: 40% 40% 35% 35%;
+  background: var(--frog);
+  transform-origin: center;
+  transition: filter 200ms ease;
+  box-shadow: inset -6px -6px 0 rgba(0, 0, 0, 0.12);
+}
+
+.game-container.shake .frog {
+  filter: brightness(0.85);
+}
+
+.frog::before,
+.frog::after {
+  content: "";
+  position: absolute;
+  top: -18px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--frog);
+  box-shadow: inset -4px -4px 0 rgba(0, 0, 0, 0.1);
+}
+
+.frog::before {
+  left: 4px;
+}
+
+.frog::after {
+  right: 4px;
+}
+
+.frog .eye {
+  position: absolute;
+  top: -12px;
+  width: 16px;
+  height: 16px;
+  background: var(--frog-eye);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+}
+
+.frog .eye .pupil {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--frog-pupil);
+}
+
+.frog .eye.left {
+  left: 10px;
+}
+
+.frog .eye.right {
+  right: 10px;
+}
+
+.obstacle {
+  position: absolute;
+  bottom: 4rem;
+  width: 70px;
+  height: 60px;
+  background: var(--obstacle);
+  border-radius: 15px;
+  left: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset -8px -6px 0 rgba(0, 0, 0, 0.15);
+}
+
+.obstacle::before {
+  content: "";
+  width: 8px;
+  height: 80%;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+}
+
+.hud {
+  background: rgba(255, 255, 255, 0.82);
+  border-radius: 1.25rem;
+  padding: 1.5rem;
+  border: 3px solid rgba(17, 105, 79, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  box-shadow: 0 12px 30px rgba(27, 43, 27, 0.15);
+}
+
+.score-label {
+  font-size: 1rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(27, 43, 27, 0.75);
+}
+
+.score {
+  font-size: clamp(2.4rem, 3vw, 3rem);
+  font-weight: 700;
+  color: #11694f;
+}
+
+.message {
+  text-align: center;
+  min-height: 2.5rem;
+  font-size: 1rem;
+}
+
+.restart {
+  padding: 0.65rem 1.8rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border-radius: 999px;
+  border: none;
+  background: linear-gradient(135deg, #34c759, #0f8a2b);
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 12px 25px rgba(15, 138, 43, 0.3);
+  transition: transform 150ms ease, box-shadow 150ms ease, filter 150ms ease;
+}
+
+.restart:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.restart:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 28px rgba(15, 138, 43, 0.36);
+}
+
+.restart:active {
+  transform: translateY(1px);
+  filter: brightness(0.95);
+}
+
+.footer {
+  background: rgba(255, 255, 255, 0.82);
+  padding: 1.75rem;
+  border-radius: 1.5rem;
+  border: 3px solid rgba(17, 105, 79, 0.2);
+  box-shadow: 0 12px 30px rgba(27, 43, 27, 0.12);
+}
+
+.footer h2 {
+  margin-bottom: 0.75rem;
+  text-align: center;
+}
+
+.footer ul {
+  list-style: none;
+  display: grid;
+  gap: 0.5rem;
+  font-size: 1.05rem;
+}
+
+.footer li::before {
+  content: "🐸";
+  margin-right: 0.35rem;
+}
+
+@keyframes shake {
+  0% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-6px);
+  }
+  50% {
+    transform: translateX(6px);
+  }
+  75% {
+    transform: translateX(-4px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@media (max-width: 540px) {
+  body {
+    padding: 1.5rem 1rem 3rem;
+  }
+
+  .frog {
+    left: 2rem;
+  }
+}
